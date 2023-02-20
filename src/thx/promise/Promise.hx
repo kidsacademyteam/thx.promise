@@ -483,25 +483,25 @@ class PromiseNil {
 
 #if js
 class PromiseAPlus {
-  public static function promise<T>(p : js.Promise<T>, ?pos : haxe.PosInfos) : Promise<T>
+  public static function promise<T>(p : #if haxe4 js.lib.Promise #else js.Promise #end<T>, ?pos : haxe.PosInfos) : Promise<T>
     return Promise.create(function(resolve, reject) {
       p.then(resolve, function(e) reject(Error.fromDynamic(e, pos)));
     });
 
-  public static function aPlus<T>(p : Promise<T>) : js.Promise<T>
-    return new js.Promise(function(resolve, reject) {
+  public static function aPlus<T>(p : Promise<T>) : #if haxe4 js.lib.Promise #else js.Promise #end<T>
+    return new #if haxe4 js.lib.Promise #else js.Promise #end(function(resolve, reject) {
         p.success(resolve).failure(reject);
       });
 }
 
 class PromiseAPlusVoid {
-  public static function promise(p : js.Promise<Void>, ?pos : haxe.PosInfos) : Promise<Nil>
+  public static function promise(p : #if haxe4 js.lib.Promise #else js.Promise #end<Void>, ?pos : haxe.PosInfos) : Promise<Nil>
     return Promise.create(function(resolve, reject) {
       p.then(cast function() resolve(nil), function(e) reject(Error.fromDynamic(e, pos)));
     });
 
-  public static function aPlus(p : Promise<Void>) : js.Promise<Nil>
-    return new js.Promise(function(resolve, reject) {
+  public static function aPlus(p : Promise<Void>) : #if haxe4 js.lib.Promise #else js.Promise #end<Nil>
+    return new #if haxe4 js.lib.Promise #else js.Promise #end(function(resolve, reject) {
         p.success(cast function() resolve(nil)).failure(reject);
       });
 }
